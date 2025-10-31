@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1761344410 source:c:\users\kellvyn\documents\area de trabalho\faculdade\c\pim\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<time.h>
+	<windows.h>
+
