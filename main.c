@@ -140,7 +140,7 @@ int carregarUsuarios(Usuario usuarios[]) {
 
 void salvarUsuarios(Usuario usuarios[], int qtd) {
     FILE *f = fopen("usuarios.csv", "wb");
-    if (!f) { printf("Erro ao salvar usuários.\n"); return; }
+    if (!f) { printf("Erro ao salvar usuï¿½rios.\n"); return; }
     write_bom_if_file_empty(f);
     for (int i=0;i<qtd;i++) {
         fprintf(f, "%s;%s;%s;%d;%s;%s;%s\n",
@@ -229,7 +229,7 @@ int carregarFrequencias(Frequencia fqs[]) {
 
 void salvarFrequencias(Frequencia fqs[], int qtd) {
     FILE *f=fopen("frequencias.csv","wb");
-    if(!f){ printf("Erro ao salvar frequências.\n"); return; }
+    if(!f){ printf("Erro ao salvar frequï¿½ncias.\n"); return; }
     write_bom_if_file_empty(f);
     for(int i=0;i<qtd;i++)
         fprintf(f,"%s;%s;%s;%s;%s\n",
@@ -251,8 +251,8 @@ void listarTurmas(Turma turmas[], int qtdTurmas) {
 }
 
 void listarUsuarios(Usuario usuarios[], int qtdUsuarios) {
-    printf("\n--- Usuários ---\n");
-    if (qtdUsuarios==0) { printf("Nenhum usuário.\n"); return; }
+    printf("\n--- Usuï¿½rios ---\n");
+    if (qtdUsuarios==0) { printf("Nenhum usuï¿½rio.\n"); return; }
     for (int i=0;i<qtdUsuarios;i++) {
         printf("%d) %s (login: %s) - %s - Tel: %s - Email: %s - Turma: %s\n",
                i+1,
@@ -270,15 +270,15 @@ void diarioEletronico(const Usuario *prof, Usuario usuarios[], int qtdUsuarios, 
     int qtdF = carregarFrequencias(fqs);
     if (qtdTurmas==0) { printf("Nenhuma turma cadastrada.\n"); return; }
     listarTurmas(turmas, qtdTurmas);
-    printf("Digite o código da turma para registrar presença: ");
+    printf("Digite o cï¿½digo da turma para registrar presenï¿½a: ");
     char cod[TURMA_COD_SZ];
     fgets(cod, TURMA_COD_SZ, stdin);
     cod[strcspn(cod,"\r\n")]=0;
     if (encontrarIndiceTurmaPorCodigo(turmas, qtdTurmas, cod)==-1) {
-        printf("Turma inválida.\n"); return;
+        printf("Turma invï¿½lida.\n"); return;
     }
     char data[20]; obterDataAtual(data, sizeof(data));
-    printf("\nData do diário: %s\n", data);
+    printf("\nData do diï¿½rio: %s\n", data);
     printf("\n--- Lista de alunos da turma %s ---\n", cod);
     int encontrou = 0;
     for (int i=0;i<qtdUsuarios;i++) {
@@ -304,18 +304,18 @@ void diarioEletronico(const Usuario *prof, Usuario usuarios[], int qtdUsuarios, 
         return;
     }
     salvarFrequencias(fqs, qtdF);
-    printf("Presenças registradas com sucesso!\n");
+    printf("Presenï¿½as registradas com sucesso!\n");
 }
 
 void visualizarFrequencia(const Usuario *aluno) {
     if (aluno->turma[0]==0) {
-        printf("Você não está em nenhuma turma.\n");
+        printf("Vocï¿½ nï¿½o estï¿½ em nenhuma turma.\n");
         return;
     }
     Frequencia fqs[MAX];
     int qtdF = carregarFrequencias(fqs);
     int total=0, pres=0;
-    printf("\n--- Frequência (%s / Turma %s) ---\n", aluno->nome, aluno->turma);
+    printf("\n--- Frequï¿½ncia (%s / Turma %s) ---\n", aluno->nome, aluno->turma);
     for (int i=0;i<qtdF;i++) {
         if (strcmp(fqs[i].aluno, aluno->nome)==0 && strcmp(fqs[i].turma, aluno->turma)==0) {
             printf("%s - %s (%s)\n", fqs[i].data, fqs[i].presenca[0]=='P'?"Presente":"Ausente", fqs[i].professor);
@@ -324,7 +324,7 @@ void visualizarFrequencia(const Usuario *aluno) {
         }
     }
     if (total==0) printf("Nenhum registro encontrado.\n");
-    else printf("\nPresença: %.1f%% (%d/%d)\n", (pres*100.0)/total, pres, total);
+    else printf("\nPresenï¿½a: %.1f%% (%d/%d)\n", (pres*100.0)/total, pres, total);
 }
 
 void menuAdmin(Usuario usuarios[], int *qtdUsuarios, Turma turmas[], int *qtdTurmas, Atividade atividades[], int *qtdAtividades) {
@@ -333,8 +333,8 @@ void menuAdmin(Usuario usuarios[], int *qtdUsuarios, Turma turmas[], int *qtdTur
         printf("\n--- MENU ADMIN ---\n");
         printf("1) Cadastrar turma\n");
         printf("2) Listar turmas\n");
-        printf("3) Cadastrar usuário (nome/login/senha/tipo/telefone/email/turma)\n");
-        printf("4) Listar usuários\n");
+        printf("3) Cadastrar usuï¿½rio (nome/login/senha/tipo/telefone/email/turma)\n");
+        printf("4) Listar usuï¿½rios\n");
         printf("0) Sair\n");
         printf("Escolha: ");
         scanf("%d", &opc);
@@ -342,10 +342,10 @@ void menuAdmin(Usuario usuarios[], int *qtdUsuarios, Turma turmas[], int *qtdTur
         if (opc==1) {
             if (*qtdTurmas >= MAX) { printf("Limite de turmas atingido.\n"); continue; }
             Turma t;
-            printf("Código da turma (ex: A1): ");
+            printf("Cï¿½digo da turma (ex: A1): ");
             fgets(t.codigo, TURMA_COD_SZ, stdin); t.codigo[strcspn(t.codigo,"\r\n")]=0;
             if (encontrarIndiceTurmaPorCodigo(turmas, *qtdTurmas, t.codigo) != -1) {
-                printf("Código já existe.\n"); continue;
+                printf("Cï¿½digo jï¿½ existe.\n"); continue;
             }
             printf("Nome da turma: ");
             fgets(t.nome, TURMA_NOME_SZ, stdin); t.nome[strcspn(t.nome,"\r\n")]=0;
@@ -355,13 +355,13 @@ void menuAdmin(Usuario usuarios[], int *qtdUsuarios, Turma turmas[], int *qtdTur
         } else if (opc==2) {
             listarTurmas(turmas, *qtdTurmas);
         } else if (opc==3) {
-            if (*qtdUsuarios >= MAX) { printf("Limite de usuários atingido.\n"); continue; }
+            if (*qtdUsuarios >= MAX) { printf("Limite de usuï¿½rios atingido.\n"); continue; }
             Usuario u;
             printf("Nome completo: ");
             fgets(u.nome, NOME_SZ, stdin); u.nome[strcspn(u.nome,"\r\n")]=0;
-            printf("Login (único): ");
+            printf("Login (ï¿½nico): ");
             fgets(u.login, LOGIN_SZ, stdin); u.login[strcspn(u.login,"\r\n")]=0;
-            if (existeLogin(usuarios, *qtdUsuarios, u.login)) { printf("Login já existe. Cancela.\n"); continue; }
+            if (existeLogin(usuarios, *qtdUsuarios, u.login)) { printf("Login jï¿½ existe. Cancela.\n"); continue; }
             printf("Senha: ");
             fgets(u.senha, SENHA_SZ, stdin); u.senha[strcspn(u.senha,"\r\n")]=0;
             printf("Tipo (1=Admin,2=Professor,3=Aluno): ");
@@ -372,17 +372,17 @@ void menuAdmin(Usuario usuarios[], int *qtdUsuarios, Turma turmas[], int *qtdTur
             fgets(u.email, EMAIL_SZ, stdin); u.email[strcspn(u.email,"\r\n")]=0;
             if (*qtdTurmas == 0) {
                 u.turma[0]=0;
-                printf("Nenhuma turma cadastrada. Usuario ficará sem turma.\n");
+                printf("Nenhuma turma cadastrada. Usuario ficarï¿½ sem turma.\n");
             } else {
-                printf("Escolha turma pelo código (ou deixe em branco):\n");
+                printf("Escolha turma pelo cï¿½digo (ou deixe em branco):\n");
                 listarTurmas(turmas, *qtdTurmas);
-                printf("Código (ex: A1) ou apenas Enter: ");
+                printf("Cï¿½digo (ex: A1) ou apenas Enter: ");
                 char sel[TURMA_COD_SZ];
                 fgets(sel, TURMA_COD_SZ, stdin); sel[strcspn(sel,"\r\n")]=0;
                 if (strlen(sel)==0) u.turma[0]=0;
                 else {
                     if (encontrarIndiceTurmaPorCodigo(turmas, *qtdTurmas, sel) == -1) {
-                        printf("Turma não encontrada. Usuário ficará sem turma.\n");
+                        printf("Turma nï¿½o encontrada. Usuï¿½rio ficarï¿½ sem turma.\n");
                         u.turma[0]=0;
                     } else {
                         strncpy(u.turma, sel, TURMA_COD_SZ-1); u.turma[TURMA_COD_SZ-1]=0;
@@ -391,13 +391,13 @@ void menuAdmin(Usuario usuarios[], int *qtdUsuarios, Turma turmas[], int *qtdTur
             }
             usuarios[*qtdUsuarios] = u; (*qtdUsuarios)++;
             salvarUsuarios(usuarios, *qtdUsuarios);
-            printf("Usuário cadastrado com sucesso.\n");
+            printf("Usuï¿½rio cadastrado com sucesso.\n");
         } else if (opc==4) {
             listarUsuarios(usuarios, *qtdUsuarios);
         } else if (opc==0) {
             printf("Saindo do menu admin.\n");
         } else {
-            printf("Opção inválida.\n");
+            printf("Opï¿½ï¿½o invï¿½lida.\n");
         }
     } while (opc!=0);
 }
@@ -422,7 +422,7 @@ void menuProfessor(const Usuario *prof, Usuario usuarios[], int qtdUsuarios, Tur
         printf("\n--- MENU PROFESSOR (%s) ---\n", prof->nome);
         printf("1) Criar atividade\n");
         printf("2) Listar minhas atividades\n");
-        printf("3) Diário eletrônico (registrar presenças)\n");
+        printf("3) Diï¿½rio eletrï¿½nico (registrar presenï¿½as)\n");
         printf("0) Sair\n");
         printf("Escolha: ");
         scanf("%d", &opc);
@@ -430,21 +430,21 @@ void menuProfessor(const Usuario *prof, Usuario usuarios[], int qtdUsuarios, Tur
         if (opc==1) {
             if (qtdAtividades >= MAX) { printf("Limite de atividades atingido.\n"); continue; }
             Atividade a;
-            printf("Título: ");
+            printf("Tï¿½tulo: ");
             fgets(a.titulo, TITULO_SZ, stdin); a.titulo[strcspn(a.titulo,"\r\n")]=0;
             printf("Tema: ");
             fgets(a.tema, TEMA_SZ, stdin); a.tema[strcspn(a.tema,"\r\n")]=0;
-            printf("Descrição: ");
+            printf("Descriï¿½ï¿½o: ");
             fgets(a.descricao, DESC_SZ, stdin); a.descricao[strcspn(a.descricao,"\r\n")]=0;
             if (qtdTurmas==0) {
-                printf("Nenhuma turma cadastrada. Atividade não criada.\n");
+                printf("Nenhuma turma cadastrada. Atividade nï¿½o criada.\n");
             } else {
                 listarTurmas(turmas, qtdTurmas);
-                printf("Digite o código da turma para a atividade: ");
+                printf("Digite o cï¿½digo da turma para a atividade: ");
                 char cod[TURMA_COD_SZ];
                 fgets(cod, TURMA_COD_SZ, stdin); cod[strcspn(cod,"\r\n")]=0;
                 if (encontrarIndiceTurmaPorCodigo(turmas, qtdTurmas, cod)==-1) {
-                    printf("Turma inválida. Cancelando.\n");
+                    printf("Turma invï¿½lida. Cancelando.\n");
                 } else {
                     strncpy(a.turma_codigo, cod, TURMA_COD_SZ-1); a.turma_codigo[TURMA_COD_SZ-1]=0;
                     strncpy(a.professor, prof->nome, PROF_SZ-1); a.professor[PROF_SZ-1]=0;
@@ -459,17 +459,17 @@ void menuProfessor(const Usuario *prof, Usuario usuarios[], int qtdUsuarios, Tur
             for (int i=0;i<qtdAtividades;i++) {
                 if (strcmp(atividades[i].professor, prof->nome)==0) {
                     found++;
-                    printf("\n[%d] %s\nTema: %s\nTurma: %s\nDescrição: %s\n",
+                    printf("\n[%d] %s\nTema: %s\nTurma: %s\nDescriï¿½ï¿½o: %s\n",
                            found, atividades[i].titulo, atividades[i].tema, atividades[i].turma_codigo, atividades[i].descricao);
                 }
             }
-            if (!found) printf("Você não tem atividades postadas.\n");
+            if (!found) printf("Vocï¿½ nï¿½o tem atividades postadas.\n");
         } else if (opc==3) {
             diarioEletronico(prof, (Usuario *)usuarios, qtdUsuarios, turmas, qtdTurmas);
         } else if (opc==0) {
             printf("Saindo do menu professor.\n");
         } else {
-            printf("Opção inválida.\n");
+            printf("Opï¿½ï¿½o invï¿½lida.\n");
         }
     } while (opc!=0);
 }
@@ -479,7 +479,7 @@ void menuAluno(const Usuario *aluno) {
     do {
         printf("\n--- MENU ALUNO (%s) ---\n", aluno->nome);
         printf("1) Ver atividades da turma\n");
-        printf("2) Ver frequência\n");
+        printf("2) Ver frequï¿½ncia\n");
         printf("0) Sair\n");
         printf("Escolha: ");
         scanf("%d",&opc); getchar();
@@ -527,12 +527,12 @@ int main() {
         usuarios[0].turma[0]=0;
         qtdUsuarios = 1;
         salvarUsuarios(usuarios, qtdUsuarios);
-        printf("Admin padrão criado: login=admin senha=1234\n");
+        printf("Admin padrï¿½o criado: login=admin senha=1234\n");
     }
 
     int opcaoSistema;
     do {
-        printf("\n=== Sistema Acadêmico (UTF-8) ===\n");
+        printf("\n=== Sistema Acadï¿½mico (UTF-8) ===\n");
         printf("1) Fazer login\n");
         printf("0) Encerrar o sistema\n");
         printf("Escolha: ");
@@ -542,7 +542,7 @@ int main() {
         if (opcaoSistema == 1) {
             int idx = realizarLogin(usuarios, qtdUsuarios);
             if (idx == -1) {
-                printf("Login ou senha inválidos.\n");
+                printf("Login ou senha invï¿½lidos.\n");
             } else {
                 Usuario *u = &usuarios[idx];
                 printf("Bem-vindo, %s!\n", u->nome);
@@ -555,10 +555,10 @@ int main() {
                     menuAluno(u);
                 }
 
-                printf("\nVocê saiu da conta.\n");
+                printf("\nVocï¿½ saiu da conta.\n");
             }
         } else if (opcaoSistema != 0) {
-            printf("Opção inválida.\n");
+            printf("Opï¿½ï¿½o invï¿½lida.\n");
         }
 
     } while (opcaoSistema != 0);
